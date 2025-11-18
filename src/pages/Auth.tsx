@@ -5,23 +5,50 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, ArrowLeft } from "lucide-react";
+import { Heart, ArrowLeft, User, UserCog, Stethoscope, Pill, Briefcase } from "lucide-react";
 import { toast } from "sonner";
+
+type UserRole = "patient" | "admin" | "doctor" | "pharmacist" | "owner" | null;
+
+const roles = [
+  { id: "patient", label: "Pasien", icon: User, description: "Booking & rekam medis", color: "bg-primary" },
+  { id: "admin", label: "Admin", icon: UserCog, description: "Pendaftaran & antrean", color: "bg-secondary" },
+  { id: "doctor", label: "Dokter", icon: Stethoscope, description: "Pemeriksaan pasien", color: "bg-info" },
+  { id: "pharmacist", label: "Apoteker", icon: Pill, description: "Kelola obat & resep", color: "bg-success" },
+  { id: "owner", label: "Pemilik", icon: Briefcase, description: "Laporan & analitik", color: "bg-warning" },
+];
 
 const Auth = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<UserRole>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!selectedRole) {
+      toast.error("Silakan pilih role terlebih dahulu");
+      return;
+    }
+    
     setIsLoading(true);
     
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
       toast.success("Login berhasil!");
-      localStorage.setItem("userRole", "patient");
-      navigate("/patient/dashboard");
+      localStorage.setItem("userRole", selectedRole);
+      
+      // Navigate to appropriate dashboard based on role
+      const dashboardRoutes = {
+        patient: "/patient/dashboard",
+        admin: "/admin/dashboard",
+        doctor: "/doctor/dashboard",
+        pharmacist: "/pharmacist/dashboard",
+        owner: "/owner/dashboard",
+      };
+      
+      navigate(dashboardRoutes[selectedRole]);
     }, 1500);
   };
 
@@ -40,7 +67,13 @@ const Auth = () => {
     <div className="min-h-screen bg-gradient-medical-soft flex flex-col p-6">
       <Button
         variant="ghost"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          if (selectedRole) {
+            setSelectedRole(null);
+          } else {
+            navigate("/");
+          }
+        }}
         className="self-start mb-4"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
@@ -56,10 +89,68 @@ const Auth = () => {
               </div>
             </div>
             <CardTitle className="text-2xl">Klinik Sentosa</CardTitle>
-            <CardDescription>Masuk atau daftar untuk melanjutkan</CardDescription>
+            <CardDescription>
+              {!selectedRole 
+                ? "Pilih role untuk melanjutkan" 
+                : "Masuk atau daftar untuk melanjutkan"}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login" className="w-full">
+            {!selectedRole ? (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground text-center mb-4">
+                  Pilih role sesuai dengan akses Anda
+                </p>
+                {roles.map((role) => (
+                  <Card
+                    key={role.id}
+                    className="cursor-pointer hover:shadow-md transition-all hover:border-primary"
+                    onClick={() => setSelectedRole(role.id as UserRole)}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`${role.color} p-3 rounded-xl`}>
+                          <role.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold">{role.label}</p>
+                          <p className="text-sm text-muted-foreground">{role.description}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <>
+                <div className="mb-4 p-3 bg-muted rounded-lg flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {(() => {
+                      const role = roles.find(r => r.id === selectedRole);
+                      const Icon = role?.icon || User;
+                      return (
+                        <>
+                          <div className={`${role?.color} p-2 rounded-lg`}>
+                            <Icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Login sebagai</p>
+                            <p className="font-semibold">{role?.label}</p>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSelectedRole(null)}
+                  >
+                    Ubah
+                  </Button>
+                </div>
+                
+                <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="login">Masuk</TabsTrigger>
                 <TabsTrigger value="register">Daftar</TabsTrigger>
@@ -143,6 +234,8 @@ const Auth = () => {
                 </form>
               </TabsContent>
             </Tabs>
+              </>
+            )}
           </CardContent>
         </Card>
       </div>
