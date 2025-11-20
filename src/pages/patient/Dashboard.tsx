@@ -10,13 +10,16 @@ import {
   MessageCircle,
   Clock,
   Activity,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth";
 
 const PatientDashboard = () => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   const quickActions = [
     { icon: Calendar, label: "Booking Kunjungan", path: "/patient/booking", color: "bg-primary" },
@@ -49,20 +52,32 @@ const PatientDashboard = () => {
       <div className="bg-gradient-medical p-6 rounded-b-3xl shadow-medical">
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-white mb-1">Halo, John!</h1>
+            <h1 className="text-2xl font-bold text-white mb-1">
+              Halo, {user?.user_metadata?.full_name || 'Pasien'}!
+            </h1>
             <p className="text-white/90">Semoga sehat selalu</p>
           </div>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            className="text-white hover:bg-white/20"
-            onClick={() => navigate("/patient/notifications")}
-          >
-            <Bell className="w-6 h-6" />
-            <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-destructive">
-              2
-            </Badge>
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-white hover:bg-white/20"
+              onClick={() => navigate("/patient/notifications")}
+            >
+              <Bell className="w-6 h-6" />
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-destructive">
+                2
+              </Badge>
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-white hover:bg-white/20"
+              onClick={signOut}
+            >
+              <LogOut className="w-6 h-6" />
+            </Button>
+          </div>
         </div>
 
         {/* Quick Stats */}

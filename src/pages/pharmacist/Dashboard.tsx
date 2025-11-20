@@ -8,12 +8,15 @@ import {
   CheckCircle,
   Clock,
   TrendingDown,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const PharmacistDashboard = () => {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
   const pendingPrescriptions = [
     { id: "R-024", patient: "John Doe", doctor: "Dr. Amanda", items: 3, time: "10:45", status: "pending" },
@@ -42,7 +45,17 @@ const PharmacistDashboard = () => {
             <h1 className="text-2xl font-bold text-white mb-1">Dashboard Apoteker</h1>
             <p className="text-white/90">Klinik Sentosa Pharmacy</p>
           </div>
-          <Badge className="bg-white/20 text-white">Apoteker</Badge>
+          <div className="flex gap-2">
+            <Badge className="bg-white/20 text-white">Apoteker</Badge>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-white hover:bg-white/20"
+              onClick={signOut}
+            >
+              <LogOut className="w-6 h-6" />
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">

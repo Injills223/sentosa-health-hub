@@ -8,13 +8,16 @@ import {
   UserPlus,
   ClipboardList,
   TrendingUp,
-  Clock
+  Clock,
+  LogOut
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/useAuth";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
   const stats = [
     { label: "Pasien Hari Ini", value: "24", icon: Users, color: "bg-primary" },
@@ -44,7 +47,17 @@ const AdminDashboard = () => {
             <h1 className="text-2xl font-bold text-white mb-1">Dashboard Admin</h1>
             <p className="text-white/90">Klinik Sentosa - Front Office</p>
           </div>
-          <Badge className="bg-white/20 text-white">Admin</Badge>
+          <div className="flex gap-2">
+            <Badge className="bg-white/20 text-white">Admin</Badge>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="text-white hover:bg-white/20"
+              onClick={signOut}
+            >
+              <LogOut className="w-6 h-6" />
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
