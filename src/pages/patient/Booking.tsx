@@ -40,7 +40,7 @@ const PatientBooking = () => {
 
     toast.success("Booking berhasil! Nomor antrean Anda: A-045");
     setTimeout(() => {
-      navigate("/patient/queue-status");
+      navigate("/patient/dashboard");
     }, 1500);
   };
 
