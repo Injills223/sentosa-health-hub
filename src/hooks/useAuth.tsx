@@ -49,42 +49,54 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    let mounted = true;
+
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, currentSession) => {
+      (event, currentSession) => {
+        if (!mounted) return;
+        
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
         if (currentSession?.user) {
-          // Defer role fetching to avoid blocking
-          setTimeout(async () => {
-            const userRole = await fetchUserRole(currentSession.user.id);
-            setRole(userRole);
-          }, 0);
+          // Fetch role immediately without setTimeout
+          fetchUserRole(currentSession.user.id).then((userRole) => {
+            if (mounted) {
+              setRole(userRole);
+              setLoading(false);
+            }
+          });
         } else {
           setRole(null);
+          setLoading(false);
         }
-        
-        setLoading(false);
       }
     );
 
-    // Check for existing session
+    // Check for existing session on mount
     supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      if (!mounted) return;
+      
       setSession(currentSession);
       setUser(currentSession?.user ?? null);
       
       if (currentSession?.user) {
         fetchUserRole(currentSession.user.id).then((userRole) => {
-          setRole(userRole);
-          setLoading(false);
+          if (mounted) {
+            setRole(userRole);
+            setLoading(false);
+          }
         });
       } else {
         setLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {

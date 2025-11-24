@@ -43,7 +43,7 @@ const Auth = () => {
         pharmacist: "/pharmacist/dashboard",
         owner: "/owner/dashboard",
       };
-      navigate(roleDashboard[role]);
+      navigate(roleDashboard[role], { replace: true });
     }
   }, [user, role, loading, navigate]);
 

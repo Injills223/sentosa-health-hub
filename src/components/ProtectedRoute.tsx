@@ -16,7 +16,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        navigate("/auth");
+        navigate("/auth", { replace: true });
       } else if (allowedRoles && role && !allowedRoles.includes(role)) {
         // Redirect to appropriate dashboard based on their actual role
         const roleDashboard = {
@@ -26,7 +26,7 @@ export const ProtectedRoute = ({ children, allowedRoles }: ProtectedRouteProps) 
           pharmacist: "/pharmacist/dashboard",
           owner: "/owner/dashboard",
         };
-        navigate(roleDashboard[role]);
+        navigate(roleDashboard[role], { replace: true });
       }
     }
   }, [user, role, loading, navigate, allowedRoles]);
