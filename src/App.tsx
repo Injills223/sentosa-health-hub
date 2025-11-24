@@ -18,9 +18,20 @@ import PatientSettings from "./pages/patient/Settings";
 import PatientArticles from "./pages/patient/Articles";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminRegisterPatient from "./pages/admin/RegisterPatient";
+import AdminQueue from "./pages/admin/Queue";
+import AdminPayment from "./pages/admin/Payment";
+import AdminReports from "./pages/admin/Reports";
 import DoctorDashboard from "./pages/doctor/Dashboard";
+import DoctorPatients from "./pages/doctor/Patients";
+import DoctorRecords from "./pages/doctor/Records";
 import PharmacistDashboard from "./pages/pharmacist/Dashboard";
+import PharmacistPrescriptions from "./pages/pharmacist/Prescriptions";
+import PharmacistInventory from "./pages/pharmacist/Inventory";
+import PharmacistReports from "./pages/pharmacist/Reports";
 import OwnerDashboard from "./pages/owner/Dashboard";
+import OwnerRevenue from "./pages/owner/Revenue";
+import OwnerReports from "./pages/owner/Reports";
+import OwnerAnalytics from "./pages/owner/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,15 +62,26 @@ const App = () => (
           {/* Admin Routes */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/register-patient" element={<AdminRegisterPatient />} />
+          <Route path="/admin/queue" element={<AdminQueue />} />
+          <Route path="/admin/payment" element={<AdminPayment />} />
+          <Route path="/admin/reports" element={<AdminReports />} />
           
           {/* Doctor Routes */}
           <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+          <Route path="/doctor/patients" element={<DoctorPatients />} />
+          <Route path="/doctor/records" element={<DoctorRecords />} />
           
           {/* Pharmacist Routes */}
           <Route path="/pharmacist/dashboard" element={<PharmacistDashboard />} />
+          <Route path="/pharmacist/prescriptions" element={<PharmacistPrescriptions />} />
+          <Route path="/pharmacist/inventory" element={<PharmacistInventory />} />
+          <Route path="/pharmacist/reports" element={<PharmacistReports />} />
           
           {/* Owner Routes */}
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
+          <Route path="/owner/revenue" element={<OwnerRevenue />} />
+          <Route path="/owner/reports" element={<OwnerReports />} />
+          <Route path="/owner/analytics" element={<OwnerAnalytics />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

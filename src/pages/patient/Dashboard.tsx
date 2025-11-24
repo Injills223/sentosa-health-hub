@@ -164,6 +164,7 @@ const PatientDashboard = () => {
               <div 
                 key={index}
                 className="flex items-start gap-3 p-3 bg-muted rounded-lg cursor-pointer hover:bg-muted/80"
+                onClick={() => navigate("/patient/articles")}
               >
                 <div className="p-2 bg-info/10 rounded-lg">
                   <BookOpen className="w-5 h-5 text-info" />
@@ -195,7 +196,7 @@ const PatientDashboard = () => {
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border p-4">
         <div className="flex justify-around max-w-md mx-auto">
-          <Button variant="ghost" size="sm" className="flex-col h-auto py-2">
+          <Button variant="ghost" size="sm" className="flex-col h-auto py-2" onClick={() => navigate("/patient/dashboard")}>
             <Calendar className="w-5 h-5 mb-1 text-primary" />
             <span className="text-xs text-primary">Beranda</span>
           </Button>
@@ -207,7 +208,7 @@ const PatientDashboard = () => {
             <Users className="w-5 h-5 mb-1" />
             <span className="text-xs">Profil</span>
           </Button>
-          <Button variant="ghost" size="sm" className="flex-col h-auto py-2" onClick={() => navigate("/patient/settings")}>
+          <Button variant="ghost" size="sm" className="flex-col h-auto py-2" onClick={() => navigate("/patient/notifications")}>
             <Bell className="w-5 h-5 mb-1" />
             <span className="text-xs">Notifikasi</span>
           </Button>
