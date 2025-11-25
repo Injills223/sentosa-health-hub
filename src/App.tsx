@@ -22,9 +22,11 @@ import AdminQueue from "./pages/admin/Queue";
 import AdminPayment from "./pages/admin/Payment";
 import AdminReports from "./pages/admin/Reports";
 import DoctorDashboard from "./pages/doctor/Dashboard";
+import DoctorExamination from "./pages/doctor/Examination";
 import DoctorPatients from "./pages/doctor/Patients";
 import DoctorRecords from "./pages/doctor/Records";
 import PharmacistDashboard from "./pages/pharmacist/Dashboard";
+import PharmacistPrescriptionDetail from "./pages/pharmacist/PrescriptionDetail";
 import PharmacistPrescriptions from "./pages/pharmacist/Prescriptions";
 import PharmacistInventory from "./pages/pharmacist/Inventory";
 import PharmacistReports from "./pages/pharmacist/Reports";
@@ -67,15 +69,18 @@ const App = () => (
           <Route path="/admin/reports" element={<AdminReports />} />
           
           {/* Doctor Routes */}
-          <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
-          <Route path="/doctor/patients" element={<DoctorPatients />} />
-          <Route path="/doctor/records" element={<DoctorRecords />} />
+        <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+        <Route path="/doctor/examination/:patientId" element={<DoctorExamination />} />
+        <Route path="/doctor/patient/:patientId" element={<DoctorExamination />} />
+        <Route path="/doctor/patients" element={<DoctorPatients />} />
+        <Route path="/doctor/records" element={<DoctorRecords />} />
           
           {/* Pharmacist Routes */}
-          <Route path="/pharmacist/dashboard" element={<PharmacistDashboard />} />
-          <Route path="/pharmacist/prescriptions" element={<PharmacistPrescriptions />} />
-          <Route path="/pharmacist/inventory" element={<PharmacistInventory />} />
-          <Route path="/pharmacist/reports" element={<PharmacistReports />} />
+        <Route path="/pharmacist/dashboard" element={<PharmacistDashboard />} />
+        <Route path="/pharmacist/prescription/:prescriptionId" element={<PharmacistPrescriptionDetail />} />
+        <Route path="/pharmacist/prescriptions" element={<PharmacistPrescriptions />} />
+        <Route path="/pharmacist/inventory" element={<PharmacistInventory />} />
+        <Route path="/pharmacist/reports" element={<PharmacistReports />} />
           
           {/* Owner Routes */}
           <Route path="/owner/dashboard" element={<OwnerDashboard />} />
